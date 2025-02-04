@@ -75,7 +75,7 @@
       <input type="text" name="klasse" placeholder="Klasse" required>
       <input type="time" name="zeit" required>
       <input type="text" name="klassenzimmer" placeholder="Klassenzimmer" required>
-      <input type="email" name="email" placeholder="E-Mail" required>
+      <input type="email" name="email" placeholder="E-Mail für Bestellbestätigung" required>
       <select name="product" required>
         <option value="">Produkt auswählen</option>
         <option value="Sandwich">Sandwich</option>
@@ -101,13 +101,14 @@
         klasse: formData.get('klasse'),
         zeit: formData.get('zeit'),
         klassenzimmer: formData.get('klassenzimmer'),
-        email: formData.get('email'),  // E-Mail-Adresse hinzufügen
+        email: formData.get('email'),  // E-Mail-Adresse des Bestellers
         product: formData.get('product')
       };
 
+      // Senden der Bestellbestätigung an die eingegebene E-Mail-Adresse
       emailjs.send("service_nqlddlr", "template_bbsvzdp", templateParams)
         .then(function(response) {
-          alert("Bestellung erfolgreich gesendet!");
+          alert("Bestellung erfolgreich gesendet! Du erhältst eine Bestätigung an die angegebene E-Mail.");
           event.target.reset();
         }, function(error) {
           alert("Fehler beim Senden der Bestellung. Bitte versuche es erneut.");
