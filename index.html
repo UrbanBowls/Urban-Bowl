@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cafeteria Bestellung</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <style>
     body {
       background-color: #f3f4f6;
@@ -74,6 +75,7 @@
       <input type="text" name="klasse" placeholder="Klasse" required>
       <input type="time" name="zeit" required>
       <input type="text" name="klassenzimmer" placeholder="Klassenzimmer" required>
+      <input type="email" name="email" placeholder="E-Mail" required>
       <select name="product" required>
         <option value="">Produkt auswählen</option>
         <option value="Sandwich">Sandwich</option>
@@ -86,12 +88,30 @@
   </div>
 
   <script>
+    (function() {
+      emailjs.init("x7oXhnmgre3tbohtn")
+    })();
+
     document.getElementById('orderForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const formData = new FormData(event.target);
-      const mailtoLink = mailto:noah.grobe@icloud.com?subject=Neue%20Cafeteria-Bestellung&body=Name: ${formData.get('name')}%0AKlasse: ${formData.get('klasse')}%0AZeit: ${formData.get('zeit')}%0AKlassenzimmer: ${formData.get('klassenzimmer')}%0AProdukt: ${formData.get('product')};
-      window.location.href = mailtoLink;
-      event.target.reset();
+
+      const templateParams = {
+        name: formData.get('name'),
+        klasse: formData.get('klasse'),
+        zeit: formData.get('zeit'),
+        klassenzimmer: formData.get('klassenzimmer'),
+        email: formData.get('email'),  // E-Mail-Adresse hinzufügen
+        product: formData.get('product')
+      };
+
+      emailjs.send("service_nqlddlr", "template_bbsvzdp", templateParams)
+        .then(function(response) {
+          alert("Bestellung erfolgreich gesendet!");
+          event.target.reset();
+        }, function(error) {
+          alert("Fehler beim Senden der Bestellung. Bitte versuche es erneut.");
+        });
     });
   </script>
 </body>
