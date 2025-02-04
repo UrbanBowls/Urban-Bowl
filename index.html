@@ -125,7 +125,7 @@
 
   <script>
     (function() {
-      emailjs.init("x7oXhnmgre3tbohtn")
+      emailjs.init("x7oXhnmgre3tbohtn");  // Deine User-ID von EmailJS
     })();
 
     document.getElementById('orderForm').addEventListener('submit', function(event) {
@@ -141,10 +141,26 @@
         product: formData.get('product'),
       };
 
+      // Bestellung an die Cafeteria senden (Originalvorlage)
       emailjs.send("service_nqlddlr", "template_bbsvzdp", templateParams)
         .then(function(response) {
-          alert("Bestellung erfolgreich gesendet! Du erhältst eine Bestätigung an die angegebene E-Mail.");
-          event.target.reset();
+          console.log("Bestellung an Cafeteria gesendet: ", response);
+          
+          // Bestellbestätigung an den Kunden senden
+          emailjs.send("service_nqlddlr", "order_confirmation", {
+            to_email: formData.get('email'), // Empfänger ist die angegebene E-Mail
+            name: formData.get('name'),
+            klasse: formData.get('klasse'),
+            zeit: formData.get('zeit'),
+            klassenzimmer: formData.get('klassenzimmer'),
+            product: formData.get('product'),
+          })
+          .then(function(response) {
+            alert("Bestellung erfolgreich gesendet! Du erhältst eine Bestätigung an die angegebene E-Mail.");
+            event.target.reset();
+          }, function(error) {
+            alert("Fehler bei der Bestätigung. Bitte versuche es erneut.");
+          });
         }, function(error) {
           alert("Fehler beim Senden der Bestellung. Bitte versuche es erneut.");
         });
