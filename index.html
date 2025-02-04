@@ -128,6 +128,9 @@
       emailjs.init("x7oXhnmgre3tbohtn");  // Deine User-ID von EmailJS
     })();
 
+    // Variable zur Speicherung der Bestellnummer (dies könnte auch auf dem Server gespeichert werden)
+    let orderNumber = 1; // Startwert der Bestellnummer
+
     document.getElementById('orderForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const formData = new FormData(event.target);
@@ -139,6 +142,7 @@
         klassenzimmer: formData.get('klassenzimmer'),
         email: formData.get('email'),
         product: formData.get('product'),
+        orderNumber: orderNumber, // Die Bestellnummer hinzufügen
       };
 
       // Bestellung an die Cafeteria senden (Originalvorlage)
@@ -147,23 +151,44 @@
           console.log("Bestellung an Cafeteria gesendet: ", response);
           
           // Bestellbestätigung an den Kunden senden
-          emailjs.send("service_nqlddlr", "order_confirmation", {
+          emailjs.send("service_nqlddlr", "order_confirmation_template", {
             to_email: formData.get('email'), // Empfänger ist die angegebene E-Mail
             name: formData.get('name'),
             klasse: formData.get('klasse'),
             zeit: formData.get('zeit'),
             klassenzimmer: formData.get('klassenzimmer'),
             product: formData.get('product'),
+            orderNumber: orderNumber, // Bestellnummer an den Kunden senden
           })
           .then(function(response) {
             alert("Bestellung erfolgreich gesendet! Du erhältst eine Bestätigung an die angegebene E-Mail.");
             event.target.reset();
+            
+            // Bestellnummer für die nächste Bestellung erhöhen
+            orderNumber++;
           }, function(error) {
             alert("Fehler bei der Bestätigung. Bitte versuche es erneut.");
           });
         }, function(error) {
           alert("Fehler beim Senden der Bestellung. Bitte versuche es erneut.");
         });
+
+      // Bestellinformationen an den Admin (dich) senden
+      emailjs.send("service_nqlddlr", "admin_order_notification", {
+        to_email: "deine-email@beispiel.de", // Deine E-Mail-Adresse
+        name: formData.get('name'),
+        klasse: formData.get('klasse'),
+        zeit: formData.get('zeit'),
+        klassenzimmer: formData.get('klassenzimmer'),
+        email: formData.get('email'),
+        product: formData.get('product'),
+        orderNumber: orderNumber, // Bestellnummer an dich senden
+      })
+      .then(function(response) {
+        console.log("Bestellbenachrichtigung an Admin gesendet: ", response);
+      }, function(error) {
+        alert("Fehler beim Senden der Bestellbenachrichtigung. Bitte versuche es erneut.");
+      });
     });
   </script>
 </body>
