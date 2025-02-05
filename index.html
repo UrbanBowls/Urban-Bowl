@@ -3,156 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cafeteria Bestellung</title>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <title>Cafeteria Hauptseite</title>
   <style>
     body {
-      background-color: #C8D9E6;
+      background-color: #F0F4F8;
       font-family: Arial, sans-serif;
       margin: 0;
-      color: #6C6C6A;
-    }
-    .container {
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-wrap: wrap;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
+      height: 100vh;
     }
-    .image-side {
-      width: 150px;
-      height: 100%;
-      margin: 10px;
-    }
-    .card {
+    .main-container {
       background-color: #fff;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 20px;
-      padding: 20px;
-      width: 100%;
-      max-width: 500px;
+      border-radius: 15px;
+      padding: 40px;
       text-align: center;
-      margin: 10px;
-      box-sizing: border-box;
+      max-width: 400px;
     }
-    h1, h2 {
-      color: #6C6C6A;
+    h1 {
+      color: #567CBD;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      background-color: #4C6665;
-      color: white;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      margin-bottom: 8px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      outline: none;
-      box-sizing: border-box;
-    }
-    input, select {
-      background-color: white;
-      color: #6C6C6A;
-    }
-    button {
+    .btn {
       background-color: #567CBD;
-      color: #fff;
+      color: white;
+      padding: 15px 30px;
       border: none;
+      border-radius: 10px;
       cursor: pointer;
+      text-decoration: none;
+      font-size: 1.2em;
       transition: background 0.3s;
+      display: inline-block;
+      margin-top: 20px;
     }
-    button:hover {
-      background-color: #333;
+    .btn:hover {
+      background-color: #445F8C;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="image-side">
-      <img src="left.jpg" alt="" style="width: 100%; height: auto; border-radius: 10px;">
-    </div>
-    <div class="card">
-      <h1>Cafeteria Bestellung</h1>
-      <h2>Produktkatalog</h2>
-      <ul>
-        <li><span>Sandwich</span><span>2,50€</span></li>
-        <li><span>Salat</span><span>3,00€</span></li>
-        <li><span>Muffin</span><span>1,50€</span></li>
-        <li><span>Saft</span><span>1,00€</span></li>
-      </ul>
-      <form id="orderForm">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="text" name="klasse" placeholder="Klasse" required>
-        <input type="time" name="zeit" required>
-        <input type="text" name="klassenzimmer" placeholder="Klassenzimmer" required>
-        <input type="email" name="email" placeholder="E-Mail für Bestellbestätigung" required>
-        <select name="product" required>
-          <option value="">Produkt auswählen</option>
-          <option value="Sandwich">Sandwich</option>
-          <option value="Salat">Salat</option>
-          <option value="Muffin">Muffin</option>
-          <option value="Saft">Saft</option>
-        </select>
-        <button type="submit">Bestellung abschicken</button>
-      </form>
-    </div>
-    <div class="image-side">
-      <img src="right.jpg" alt="" style="width: 100%; height: auto; border-radius: 10px;">
-    </div>
+  <div class="main-container">
+    <h1>Willkommen in der Cafeteria</h1>
+    <p>Entdecke unsere leckeren Angebote!</p>
+    <a href="cafeteria_bestellung.html" class="btn">Zu den Salat-Bowls</a>
   </div>
-
-  <script>
-    (function() {
-      emailjs.init("x7oXhnmgre3tbohtn");
-    })();
-
-    document.getElementById('orderForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-
-      const templateParams = {
-        name: formData.get('name'),
-        klasse: formData.get('klasse'),
-        zeit: formData.get('zeit'),
-        klassenzimmer: formData.get('klassenzimmer'),
-        email: formData.get('email'),
-        product: formData.get('product'),
-      };
-
-      emailjs.send("service_nqlddlr", "template_bbsvzdp", templateParams)
-        .then(function(response) {
-          console.log("Bestellung an Cafeteria gesendet: ", response);
-          emailjs.send("service_nqlddlr", "order_confirmation_template", {
-            to_email: formData.get('email'),
-            name: formData.get('name'),
-            klasse: formData.get('klasse'),
-            zeit: formData.get('zeit'),
-            klassenzimmer: formData.get('klassenzimmer'),
-            product: formData.get('product'),
-          })
-          .then(function(response) {
-            alert("Bestellung erfolgreich gesendet! Du erhältst eine Bestätigung an die angegebene E-Mail.");
-            event.target.reset();
-          }, function(error) {
-            alert("Fehler bei der Bestätigung. Bitte versuche es erneut.");
-          });
-        }, function(error) {
-          alert("Fehler beim Senden der Bestellung. Bitte versuche es erneut.");
-        });
-    });
-  </script>
 </body>
 </html>
