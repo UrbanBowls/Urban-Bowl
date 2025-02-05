@@ -7,10 +7,10 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <style>
     body {
-      background-color: #C8D9E6; /* Hintergrundfarbe */
+      background-color: #C8D9E6;
       font-family: Arial, sans-serif;
       margin: 0;
-      color: #6C6C6A; /* Schriftfarbe */
+      color: #6C6C6A;
     }
     .container {
       display: flex;
@@ -38,7 +38,7 @@
       box-sizing: border-box;
     }
     h1, h2 {
-      color: #6C6C6A; /* Schriftfarbe geändert */
+      color: #6C6C6A;
     }
     ul {
       list-style: none;
@@ -48,8 +48,8 @@
       display: flex;
       justify-content: space-between;
       padding: 10px;
-      background-color: #4C6665; /* Farbe der Produktfelder geändert */
-      color: white; /* Textfarbe der Produktfelder */
+      background-color: #4C6665;
+      color: white;
       border: 1px solid #d1d5db;
       border-radius: 10px;
       margin-bottom: 8px;
@@ -61,11 +61,11 @@
       border: 1px solid #d1d5db;
       border-radius: 10px;
       outline: none;
-      box-sizing: border-box; /* Sicherstellen, dass padding und border berücksichtigt werden */
+      box-sizing: border-box;
     }
     input, select {
-      background-color: white; /* Eingabefenster wieder auf normalen Zustand gesetzt */
-      color: #6C6C6A; /* Textfarbe in den Eingabefeldern */
+      background-color: white;
+      color: #6C6C6A;
     }
     button {
       background-color: #567CBD;
@@ -77,20 +77,13 @@
     button:hover {
       background-color: #333;
     }
-    input[type="file"] {
-      display: block;
-      margin: 10px auto;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Linkes Bild -->
     <div class="image-side">
       <img src="left.jpg" alt="" style="width: 100%; height: auto; border-radius: 10px;">
     </div>
-
-    <!-- Formularbereich (Produktkatalog) -->
     <div class="card">
       <h1>Cafeteria Bestellung</h1>
       <h2>Produktkatalog</h2>
@@ -116,8 +109,6 @@
         <button type="submit">Bestellung abschicken</button>
       </form>
     </div>
-
-    <!-- Rechtes Bild -->
     <div class="image-side">
       <img src="right.jpg" alt="" style="width: 100%; height: auto; border-radius: 10px;">
     </div>
@@ -125,11 +116,8 @@
 
   <script>
     (function() {
-      emailjs.init("x7oXhnmgre3tbohtn");  // Deine User-ID von EmailJS
+      emailjs.init("x7oXhnmgre3tbohtn");
     })();
-
-    // Variable zur Speicherung der Bestellnummer (dies könnte auch auf dem Server gespeichert werden)
-    let orderNumber = 1; // Startwert der Bestellnummer
 
     document.getElementById('orderForm').addEventListener('submit', function(event) {
       event.preventDefault();
@@ -142,53 +130,28 @@
         klassenzimmer: formData.get('klassenzimmer'),
         email: formData.get('email'),
         product: formData.get('product'),
-        orderNumber: orderNumber, // Die Bestellnummer hinzufügen
       };
 
-      // Bestellung an die Cafeteria senden (Originalvorlage)
       emailjs.send("service_nqlddlr", "template_bbsvzdp", templateParams)
         .then(function(response) {
           console.log("Bestellung an Cafeteria gesendet: ", response);
-          
-          // Bestellbestätigung an den Kunden senden
           emailjs.send("service_nqlddlr", "order_confirmation_template", {
-            to_email: formData.get('email'), // Empfänger ist die angegebene E-Mail
+            to_email: formData.get('email'),
             name: formData.get('name'),
             klasse: formData.get('klasse'),
             zeit: formData.get('zeit'),
             klassenzimmer: formData.get('klassenzimmer'),
             product: formData.get('product'),
-            orderNumber: orderNumber, // Bestellnummer an den Kunden senden
           })
           .then(function(response) {
             alert("Bestellung erfolgreich gesendet! Du erhältst eine Bestätigung an die angegebene E-Mail.");
             event.target.reset();
-            
-            // Bestellnummer für die nächste Bestellung erhöhen
-            orderNumber++;
           }, function(error) {
             alert("Fehler bei der Bestätigung. Bitte versuche es erneut.");
           });
         }, function(error) {
           alert("Fehler beim Senden der Bestellung. Bitte versuche es erneut.");
         });
-
-      // Bestellinformationen an den Admin (dich) senden
-      emailjs.send("service_nqlddlr", "admin_order_notification", {
-        to_email: "deine-email@beispiel.de", // Deine E-Mail-Adresse
-        name: formData.get('name'),
-        klasse: formData.get('klasse'),
-        zeit: formData.get('zeit'),
-        klassenzimmer: formData.get('klassenzimmer'),
-        email: formData.get('email'),
-        product: formData.get('product'),
-        orderNumber: orderNumber, // Bestellnummer an dich senden
-      })
-      .then(function(response) {
-        console.log("Bestellbenachrichtigung an Admin gesendet: ", response);
-      }, function(error) {
-        alert("Fehler beim Senden der Bestellbenachrichtigung. Bitte versuche es erneut.");
-      });
     });
   </script>
 </body>
