@@ -6,9 +6,11 @@
   <title>Urban Bowls</title>
   <style>
     body {
-      background-image: url('logo.jpg'); /* Hier dein Hintergrundbild einfügen */
-      background-size: background-position; /* Hintergrundbild auf volle Größe anpassen */
-      background-position: center bottom; /* Hintergrund zentrieren */
+      background-image: url('logo.jpg'); /* Ersetze mit dem korrekten Pfad */
+      background-size: cover; /* Stellt sicher, dass das gesamte Bild angezeigt wird */
+      background-position: center; /* Zentriert das Bild */
+      background-repeat: no-repeat; /* Verhindert Wiederholungen */
+      background-attachment: fixed; /* Hält das Bild beim Scrollen fixiert */
       font-family: Arial, sans-serif;
       margin: 0;
       color: #333;
@@ -21,7 +23,7 @@
       padding: 20px;
     }
     .product-card {
-      background-color: #4C6665; /* Hintergrundfarbe geändert */
+      background-color: rgba(76, 102, 101, 0.9); /* Leicht transparente Box für bessere Lesbarkeit */
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 15px;
       width: 250px;
@@ -35,15 +37,15 @@
     .product-card h3 {
       margin: 10px 0 5px;
       font-size: 1.2em;
-      color: #F5F5DC; /* Farbe der Überschrift geändert */
+      color: #F5F5DC;
     }
     .product-card p {
       margin: 5px 0;
-      color: #fff; /* Textfarbe angepasst */
+      color: #fff;
     }
     .product-card span {
       font-weight: bold;
-      color: #fff; /* Textfarbe angepasst */
+      color: #fff;
     }
     .buy-button {
       display: inline-block;
